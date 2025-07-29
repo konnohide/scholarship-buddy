@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奨学金業務改革の成果 | ガクシーAgent導入事例</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght0@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #F8F9FA;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border-left: 8px solid #0A9396;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .kpi-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #005F73;
+            line-height: 1.2;
+        }
+        .kpi-unit {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0A9396;
+            margin-left: 0.5rem;
+        }
+        .kpi-label {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .flow-step {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .flow-step:not(:last-child)::after {
+            content: '▼';
+            position: absolute;
+            left: 20px;
+            bottom: 0.5rem;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: #94D2BD;
+        }
+        .flow-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: 0;
+            width: 4px;
+            background-color: #94D2BD;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-[#005F73] text-white p-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tight">奨学金業務（ガクシーAgent導入）成果</h1>
+        <!-- サブタイトルはユーザーの要望により削除されました -->
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="my-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#005F73]">飛躍的な業務量増加への挑戦</h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-3xl mx-auto">人的リソースはそのままに、プラットフォーム活用で一昨年比2.5倍の業務増を乗り越え、より質の高い学生対応を実現しました。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-bold text-[#0A9396] mb-4">増加した主な要因</h3>
+                    <ul class="space-y-4 text-lg">
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#EE9B00]">📈</span> <div><strong>エントリー数の大幅増:</strong> 一昨年比 約2倍、昨年度比 1.5倍に増加。</div></li>
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#CA6702]">👨‍👩‍👧‍👦</span> <div><strong>複雑な要件への対応:</strong> 多子世帯支援など、制度の複雑化。</div></li>
+                        <li class="flex items-start"><span class="text-2xl mr-3 text-[#BB3E03]">⏳</span> <div><strong>施策実現の時間コスト:</strong> PDCAサイクルやWeb改善への継続的な取り組み。</div></li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-bold text-center text-[#0A9396] mb-4">年度別 エントリー件数の推移</h3>
+                    <div class="chart-container">
+                        <canvas id="entryGrowthChart"></canvas>
+                    </div>
+                    <p class="text-center text-gray-600 mt-4">エントリー数は急増。旧体制では対応困難な状況でした。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16 py-12 bg-gray-100 rounded-xl">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#005F73]">非効率からの脱却：業務改善の軌跡</h2>
+            <div class="max-w-3xl mx-auto relative">
+                <div class="timeline-line hidden md:block"></div>
+                <div class="flow-step">
+                    <div class="flow-icon bg-[#AE2012] mr-6"><span>1</span></div>
+                    <div>
+                        <h4 class="text-xl font-bold text-[#AE2012]">旧体制 (～2023年度)</h4>
+                        <p class="text-gray-600">複数ツールが乱立し非効率。メールや口頭でのやり取りが中心で、情報が散在。</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-icon bg-[#CA6702] mr-6"><span>2</span></div>
+                    <div>
+                        <h4 class="text-xl font-bold text-[#CA6702]">最適化序盤 (2024年度上期)</h4>
+                        <p class="text-gray-600">Googleフォームへ集約し一定の成果。しかし、ファイル授受や個別対応に限界も。</p>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-icon bg-[#0A9396] mr-6"><span>3</span></div>
+                    <div>
+                        <h4 class="text-xl font-bold text-[#0A9396]">ガクシーAgent稼働 (2024年度下期～)</h4>
+                        <p class="text-gray-600">Web誘導とオンラインエントリーを確立。段階的な導入と改善で、現在の最適化された体制へ。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#005F73]">目に見える成果：主要KPIハイライト</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="kpi-card">
+                    <div class="kpi-value">1.4<span class="kpi-unit">億円</span></div>
+                    <div class="kpi-label">年間減免見込総額 (昨年度比2倍以上)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value">220<span class="kpi-unit">名超</span></div>
+                    <div class="kpi-label">支援対象学生数見込</div>
+                </div>
+                <div class="kpi-card md:col-span-2 lg:col-span-1">
+                    <div class="kpi-value">5<span class="kpi-unit">人に</span>1<span class="kpi-unit">人</span></div>
+                    <div class="kpi-label">国内学生の支援対象者割合</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 items-center">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                     <h3 class="text-2xl font-bold text-[#0A9396] mb-4">入学前エントリーの推進</h3>
+                    <div class="chart-container mx-auto">
+                        <canvas id="preEntryChart"></canvas>
+                    </div>
+                    <p class="text-center text-gray-600 mt-4">2025年度予約採用者51件中38件(約75%)が、入学前にエントリーを完了。早期の学生把握と支援体制を強化しました。</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-bold text-[#0A9396] mb-4">ガクシーAgent導入による主な成果</h3>
+                    <ul class="space-y-3 text-lg">
+                        <li class="flex items-center"><span class="text-green-500 text-2xl mr-3">✔</span> 応募受付の効率化と対応力向上</li>
+                        <li class="flex items-center"><span class="text-green-500 text-2xl mr-3">✔</span> 複雑な要件への柔軟な対応と学生支援の強化</li>
+                        <li class="flex items-center"><span class="text-green-500 text-2xl mr-3">✔</span> 円滑なコミュニケーションの実現</li>
+                        <li class="flex items-center"><span class="text-green-500 text-2xl mr-3">✔</span> 業務プロセスのデジタル化と生産性向上</li>
+                        <li class="flex items-center"><span class="text-green-500 text-2xl mr-3">✔</span> 交付金計算の半自動化による時間短縮と正確性</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16 py-12 bg-[#005F73] text-white rounded-xl">
+            <h2 class="text-3xl font-bold text-center mb-10">なぜガクシーAgentだったのか？</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6">
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-[#94D2BD]">理念への共感</h4>
+                    <p class="mt-2">「あきらめなくていい社会を」という哲学が、学生支援の思想と合致。</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-[#94D2BD]">特化型と柔軟性</h4>
+                    <p class="mt-2">奨学金特化型でありながら、複雑な要件に対応できる柔軟な設定が可能。</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-[#94D2BD]">円滑な連携</h4>
+                    <p class="mt-2">ファイル授受や差し戻しがシステム内で完結。Googleフォームの限界を克服。</p>
+                </div>
+                <div class="bg-white/10 p-6 rounded-lg backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-[#94D2BD]">改善サイクル</h4>
+                    <p class="mt-2">利用者からのフィードバックが迅速に反映され、常に最適な環境を維持。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-2 text-[#005F73]">次の展開へ：支援の未来像</h2>
+            <p class="text-center text-lg text-gray-600 mb-10 max-w-3xl mx-auto">今回の成功は通過点です。プラットフォームを最大限に活用し、学生一人ひとりに寄り添う、より高度な支援体制を構築します。</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-[#0A9396]">コンサルティング型支援</h3>
+                    <p class="text-gray-600 mt-2">FPの知見を活かし、4年間を見通したファイナンシャル・プランニングを支援します。</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                     <div class="text-5xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold text-[#0A9396]">ナレッジマネジメント</h3>
+                    <p class="text-gray-600 mt-2">業務から得た洞察を蓄積・分析し、継続的なプロセス改善と効果の最大化を目指します。</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                     <div class="text-5xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold text-[#0A9396]">テクノロジー活用</h3>
+                    <p class="text-gray-600 mt-2">AIモデル連携や統合情報基盤の構築を視野に入れ、さらなる業務の高度化を追求します。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-6 mt-12">
+        <p>&copy; 2025 DHU Scholarship Program. All Rights Reserved.</p>
+        <p class="text-sm text-gray-400 mt-2">This infographic was created to showcase the results of the scholarship program's digital transformation.</p>
+    </footer>
+
+    <script>
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const brilliantBlues = {
+            primary: '#0A9396',
+            secondary: '#94D2BD',
+            accent: '#EE9B00',
+            dark: '#005F73',
+            danger: '#AE2012',
+            light: '#E9D8A6'
+        };
+
+        const entryGrowthCtx = document.getElementById('entryGrowthChart').getContext('2d');
+        new Chart(entryGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['一昨年度', '昨年度', '本年度'],
+                datasets: [{
+                    label: 'エントリー件数',
+                    data: [94, 137, 190], /* データが更新されました */
+                    backgroundColor: [brilliantBlues.secondary, brilliantBlues.primary, brilliantBlues.dark],
+                    borderColor: [brilliantBlues.secondary, brilliantBlues.primary, brilliantBlues.dark],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '件数 (昨年度比)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const preEntryCtx = document.getElementById('preEntryChart').getContext('2d');
+        new Chart(preEntryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['入学前エントリー完了', '入学後エントリー'],
+                datasets: [{
+                    data: [38, 51 - 38],
+                    backgroundColor: [brilliantBlues.dark, brilliantBlues.secondary],
+                    borderColor: ['#FFFFFF'],
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+</body>
+</html>
